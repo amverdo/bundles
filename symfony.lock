@@ -36,6 +36,18 @@
             "config/bootstrap.php"
         ]
     },
+    "symfony/debug-bundle": {
+        "version": "4.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.1",
+            "ref": "f8863cbad2f2e58c4b65fa1eac892ab189971bea"
+        },
+        "files": [
+            "config/packages/dev/debug.yaml"
+        ]
+    },
     "symfony/dependency-injection": {
         "version": "v5.0.7"
     },
@@ -89,6 +101,12 @@
             "src/Kernel.php"
         ]
     },
+    "symfony/http-client": {
+        "version": "v5.0.7"
+    },
+    "symfony/http-client-contracts": {
+        "version": "v2.0.1"
+    },
     "symfony/http-foundation": {
         "version": "v5.0.7"
     },
@@ -124,6 +142,12 @@
     "symfony/service-contracts": {
         "version": "v2.0.1"
     },
+    "symfony/translation-contracts": {
+        "version": "v2.0.1"
+    },
+    "symfony/twig-bridge": {
+        "version": "v5.0.7"
+    },
     "symfony/var-dumper": {
         "version": "v5.0.7"
     },
@@ -132,5 +156,8 @@
     },
     "symfony/yaml": {
         "version": "v5.0.7"
+    },
+    "twig/twig": {
+        "version": "v3.0.3"
     }
 }

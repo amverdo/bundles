@@ -20,10 +20,12 @@ class ApiManager implements ApiManagerInterface
     /* @var int */
     private $cacheLife;
 
-    public function __construct(HttpClientInterface $http, AdapterInterface $cache)
+    public function __construct(HttpClientInterface $http, AdapterInterface $cache, string $uri = '', int $cacheLife = 0)
     {
         $this->http = $http;
         $this->cache = $cache;
+        $this->uri = $uri;
+        $this->cacheLife = $cacheLife;
     }
 
     public function getSomething(): array

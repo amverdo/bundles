@@ -2,6 +2,7 @@
 
 namespace Homepizza\ApiBundle\DependencyInjection;
 
+use Symfony\Bundle\FrameworkBundle\DependencyInjection\Configuration;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
@@ -15,6 +16,7 @@ class HomepizzaApiExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        // TODO: Implement load() method.
+        var_dump(123);
+        die();
     }
 }

@@ -27,6 +27,7 @@
     },
     "autoload": {
         "psr-4": {
+            "Homepizza\\ApiBundle\\": "lib/homepizza/api-bundle/src/",
             "App\\": "src/"
         }
     },

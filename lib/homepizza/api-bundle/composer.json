@@ -1,0 +1,21 @@
+{
+    "name": "homepizza/api-bundle",
+    "description": "Bundle for manage data by API.",
+    "type": "symfony-bundle",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexandr Malozemov",
+            "email": "is.malozemov@ya.ru"
+        }
+    ],
+    "require": {
+        "php": "^7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Homepizza\\ApiBundle\\": "src/"
+        }
+    }
+}

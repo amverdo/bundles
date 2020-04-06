@@ -1,0 +1,6 @@
+services:
+  Homepizza\ApiBundle\ApiManager:
+    autowire: true
+    autoconfigure: true
+    public: true
+    arguments: ['@.debug.http_client', '@cache.api']

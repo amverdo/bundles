@@ -24,5 +24,6 @@ framework:
 
         pools:
             cache.api:
-                provider: 'memcached://localhost:11211'
-                default_lifetime: 30000
+                adapters: ["cache.adapter.memcached"]
+                #provider: 'memcached://localhost:11211'
+                default_lifetime: 10

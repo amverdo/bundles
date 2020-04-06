@@ -34,8 +34,10 @@ class HomeController extends AbstractController
      */
     public function apiAction(): JsonResponse
     {
-//        $item = $this->cache->getItem(sha1('demo_key'));
-        $item = $this->cache->getItem(sha1('test_key'));
+        $result = $this->homepizza->getSomething();
+
+        $item = $this->cache->getItem(sha1('demo_key'));
+//        $item = $this->cache->getItem(sha1('test_key'));
         if (!$item->isHit()) {
             $data = '123123';
             $item->set($data);
@@ -47,7 +49,6 @@ class HomeController extends AbstractController
             dump('ЭТО cache.app!');
             die();
         }
-        $result = $this->homepizza->getSomething();
         return $this->json($result, 200);
     }
 }

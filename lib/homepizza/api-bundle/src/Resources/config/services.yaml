@@ -3,4 +3,4 @@ services:
     autowire: true
     autoconfigure: true
     public: true
-    arguments: ['@.debug.http_client', '@cache.api']
+    arguments: ['@.debug.http_client', '@cache.app']

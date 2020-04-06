@@ -1,5 +1,10 @@
 services:
   Homepizza\ApiBundle\ApiManager:
+    alias: 'homepizza.api'
+    public: false
+
+  homepizza.api:
+    class: 'Homepizza\ApiBundle\ApiManager'
     autowire: true
     autoconfigure: true
     public: true

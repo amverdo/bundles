@@ -9,6 +9,23 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        // TODO: Implement getConfigTreeBuilder() method.
+        $treeBuilder = new TreeBuilder('homepizza_api');
+        if (\method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $rootNode = $treeBuilder->root('homepizza_api');
+        }
+
+        $rootNode
+            ->children()
+                ->scalarNode('link')
+                ->defaultValue('http://homepizza.web/api.php')
+                ->cannotBeEmpty()
+                ->end()
+            ->end()
+        ;
+
+        return $treeBuilder;
     }
 }

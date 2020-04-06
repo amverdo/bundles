@@ -17,25 +17,30 @@ class ApiManager implements ApiManagerInterface
     /* @var string */
     private $uri;
 
-    /* @var int */
-    private $cacheLife;
-
-    public function __construct(HttpClientInterface $http, AdapterInterface $cache, string $uri = '', int $cacheLife = 0)
+    public function __construct(
+        HttpClientInterface $http,
+        AdapterInterface $cache,
+        string $uri = 'http://homepizza.web/v2.php'
+    )
     {
         $this->http = $http;
         $this->cache = $cache;
         $this->uri = $uri;
-        $this->cacheLife = $cacheLife;
     }
 
     public function getSomething(): array
     {
         $result = $this->http
-            ->request('GET', 'http://homepizza.web/v2.php/api/data/division')
+            ->request('GET', $this->uri.'/api/data/division')
             ->getContent()
         ;
 
-        $this->cache->deleteItem(sha1('test_key'));
+//        $this->cache->deleteItems([
+//            sha1('test_key'),
+//            sha1('test_key2'),
+//            sha1('test_key3'),
+//            sha1('test_key4')
+//        ]);
 
         $item = $this->cache->getItem(sha1('test_key'));
         if (!$item->isHit()) {

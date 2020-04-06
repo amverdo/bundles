@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('link')
                 ->defaultValue('http://homepizza.web/api.php')
+                ->info('Entry point for requests')
                 ->cannotBeEmpty()
                 ->end()
             ->end()

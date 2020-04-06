@@ -5,6 +5,7 @@ namespace Homepizza\ApiBundle;
 use Homepizza\ApiBundle\ApiManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ApiManager implements ApiManagerInterface
 {
@@ -20,21 +21,22 @@ class ApiManager implements ApiManagerInterface
     public function __construct(
         HttpClientInterface $http,
         AdapterInterface $cache,
-        string $uri = 'http://homepizza.web/v2.php'
+        ContainerInterface $container
     )
     {
         $this->http = $http;
         $this->cache = $cache;
-        $this->uri = $uri;
+        $this->uri = $container->getParameter('homepizza.api_link');
     }
 
     public function getSomething(): array
     {
+        dump($this->uri);
+        die();
         $result = $this->http
             ->request('GET', $this->uri.'/api/data/division')
             ->getContent()
         ;
-
 //        $this->cache->deleteItems([
 //            sha1('test_key'),
 //            sha1('test_key2'),

@@ -21,13 +21,15 @@ class HomepizzaApiExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        // TODO: Set Arguments
-        // ...
+        $container->setParameter('homepizza.api_link', $config['link']);
 
         $loader = new YamlFileLoader(
             $container,
             new FileLocator(__DIR__.'/../Resources/config')
         );
         $loader->load('services.yaml');
+
+//        $defiinitopm = $container->getDefinition('homepizza.api');
+//        $defiinitopm->setArgument(2, $config['link']);
     }
 }

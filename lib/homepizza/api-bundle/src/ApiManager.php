@@ -35,6 +35,15 @@ class ApiManager implements ApiManagerInterface
             ->getContent()
         ;
 
+        $item = $this->cache->getItem(sha1('test_key'));
+        if (!$item->isHit()) {
+            $data = '123123';
+            $item->set($data);
+            $this->cache->save($item);
+            dump('Нет кэш API!');
+            die();
+        }
+
         return json_decode($result, true);
     }
 }

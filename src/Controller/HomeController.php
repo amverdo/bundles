@@ -6,13 +6,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Homepizza\ApiBundle\ApiManager;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class HomeController extends AbstractController
 {
     private $homepizza;
+    private $cache;
 
-    public function __construct(ApiManager $homepizza)
+    public function __construct(ApiManager $homepizza, AdapterInterface $cache)
     {
+        $this->cache = $cache;
         $this->homepizza = $homepizza;
     }
 
@@ -31,6 +34,19 @@ class HomeController extends AbstractController
      */
     public function apiAction(): JsonResponse
     {
+//        $item = $this->cache->getItem(sha1('demo_key'));
+        $item = $this->cache->getItem(sha1('test_key'));
+        if (!$item->isHit()) {
+            $data = '123123';
+            $item->set($data);
+            $this->cache->save($item);
+            dump('Нет кэш APP');
+            die();
+        }
+        else {
+            dump('ЭТО cache.app!');
+            die();
+        }
         $result = $this->homepizza->getSomething();
         return $this->json($result, 200);
     }

@@ -5,7 +5,7 @@ namespace Homepizza\ApiBundle;
 use Homepizza\ApiBundle\DTO\Customer;
 use Homepizza\ApiBundle\DTO\Delivery;
 use Homepizza\ApiBundle\DTO\Order;
-use Homepizza\ApiBundle\DTO\Responses\AddressesResponse;
+use Homepizza\ApiBundle\DTO\Responses\AddressResponse;
 use Homepizza\ApiBundle\DTO\Responses\BonusesResponse;
 use Homepizza\ApiBundle\DTO\Responses\CustomerResponse;
 use Homepizza\ApiBundle\DTO\Responses\OrderResponse;
@@ -25,9 +25,9 @@ interface ApiManagerInterface
      * Адреса клиента
      *
      * @param string $phone
-     * @return AddressesResponse
+     * @return array
      */
-    public function customerAddresses(string $phone): AddressesResponse;
+    public function customerAddresses(string $phone): array;
 
     /**
      * Бонусный баланс клиента

@@ -4,7 +4,7 @@
 namespace Homepizza\ApiBundle\DTO\Responses;
 
 
-class AddressesResponse
+class AddressResponse
 {
 
 }

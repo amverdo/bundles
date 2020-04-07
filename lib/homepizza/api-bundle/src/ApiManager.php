@@ -6,7 +6,7 @@ use Homepizza\ApiBundle\ApiManagerInterface;
 use Homepizza\ApiBundle\DTO\Customer;
 use Homepizza\ApiBundle\DTO\Delivery;
 use Homepizza\ApiBundle\DTO\Order;
-use Homepizza\ApiBundle\DTO\Responses\AddressesResponse;
+use Homepizza\ApiBundle\DTO\Responses\AddressResponse;
 use Homepizza\ApiBundle\DTO\Responses\BonusesResponse;
 use Homepizza\ApiBundle\DTO\Responses\CustomerResponse;
 use Homepizza\ApiBundle\DTO\Responses\OrderResponse;
@@ -38,7 +38,7 @@ class ApiManager implements ApiManagerInterface
         // TODO: Implement customerProfile() method.
     }
 
-    public function customerAddresses(string $phone): AddressesResponse
+    public function customerAddresses(string $phone): array
     {
         // TODO: Implement customerAddresses() method.
     }

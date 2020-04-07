@@ -3,7 +3,7 @@ services:
     class: 'Homepizza\ApiBundle\ApiManager'
     autowire: true
     public: true
-    arguments: ['@.debug.http_client', '@cache.app']
+    arguments: ['@http_client', '@cache.app']
 
   Homepizza\ApiBundle\ApiManager:
     alias: 'homepizza.api'

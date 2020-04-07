@@ -3,6 +3,14 @@
 namespace Homepizza\ApiBundle;
 
 use Homepizza\ApiBundle\ApiManagerInterface;
+use Homepizza\ApiBundle\DTO\Customer;
+use Homepizza\ApiBundle\DTO\Delivery;
+use Homepizza\ApiBundle\DTO\Order;
+use Homepizza\ApiBundle\DTO\Responses\AddressesResponse;
+use Homepizza\ApiBundle\DTO\Responses\BonusesResponse;
+use Homepizza\ApiBundle\DTO\Responses\CustomerResponse;
+use Homepizza\ApiBundle\DTO\Responses\OrderResponse;
+use Homepizza\ApiBundle\DTO\Responses\TimeResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -18,68 +26,35 @@ class ApiManager implements ApiManagerInterface
     /* @var string */
     private $uri;
 
-    public function __construct(
-        HttpClientInterface $http,
-        AdapterInterface $cache,
-        ContainerInterface $container
-    )
+    public function __construct(HttpClientInterface $http, AdapterInterface $cache, ContainerInterface $container)
     {
         $this->http = $http;
         $this->cache = $cache;
         $this->uri = $container->getParameter('homepizza.api_link');
     }
 
-    public function getSomething(): array
+    public function customerProfile(string $phone): CustomerResponse
     {
-        dump($this->uri);
-        die();
-        $result = $this->http
-            ->request('GET', $this->uri.'/api/data/division')
-            ->getContent()
-        ;
-//        $this->cache->deleteItems([
-//            sha1('test_key'),
-//            sha1('test_key2'),
-//            sha1('test_key3'),
-//            sha1('test_key4')
-//        ]);
+        // TODO: Implement customerProfile() method.
+    }
 
-        $item = $this->cache->getItem(sha1('test_key'));
-        if (!$item->isHit()) {
-            $data = '123123';
-            $item->set($data);
-            $this->cache->save($item);
-            dump('Нет кэш API!');
-//            die();
-        }
+    public function customerAddresses(string $phone): AddressesResponse
+    {
+        // TODO: Implement customerAddresses() method.
+    }
 
-        $item = $this->cache->getItem(sha1('test_key2'));
-        if (!$item->isHit()) {
-            $data = '123123';
-            $item->set($data);
-            $this->cache->save($item);
-            dump('Нет кэш API 2!');
-//            die();
-        }
+    public function customerBonuses(string $phone): BonusesResponse
+    {
+        // TODO: Implement customerBonuses() method.
+    }
 
-        $item = $this->cache->getItem(sha1('test_key3'));
-        if (!$item->isHit()) {
-            $data = '123123';
-            $item->set($data);
-            $this->cache->save($item);
-            dump('Нет кэш API 3!');
-//            die();
-        }
+    public function checkTime(Delivery $delivery, Order $order): TimeResponse
+    {
+        // TODO: Implement checkTime() method.
+    }
 
-        $item = $this->cache->getItem(sha1('test_key4'));
-        if (!$item->isHit()) {
-            $data = '123123';
-            $item->set($data);
-            $this->cache->save($item);
-            dump('Нет кэш API 4!');
-//            die();
-        }
-
-        return json_decode($result, true);
+    public function createOrder(Customer $customer, Delivery $delivery, Order $order): OrderResponse
+    {
+        // TODO: Implement createOrder() method.
     }
 }

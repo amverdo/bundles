@@ -45,65 +45,39 @@ class ApiManager implements ApiManagerInterface
 
     public function customerProfile(string $phone): CustomerResponse
     {
-        $item = $this->cache->getItem('apibundle_'.sha1('profile'));
-        if (!$item->isHit()) {
-            try {
-                $result = $this->http
-                    ->request('GET', $this->uri . '/site/customer/'. $phone)
-                    ->toArray();
-            } catch (ClientExceptionInterface $e) {
-                throw new \Exception('Некорректный запрос');
-            } catch (DecodingExceptionInterface $e) {
-                throw new \Exception('Некорректный ответ');
-            } catch (RedirectionExceptionInterface $e) {
-                throw new \Exception('Больше не обслуживается');
-            } catch (ServerExceptionInterface $e) {
-                throw new \Exception('Ошибка на сервере');
-            } catch (TransportExceptionInterface $e) {
-                throw new \Exception('Проблема с сетью');
-            }
-            $item->set($result);
-            $this->cache->save($item);
-            $this->addKey($item->getKey());
-        }
-        $result = $item->get();
+        $result = $this->makeRequest(
+            'profile_'.$phone,
+            'GET',
+            $this->uri . '/site/customer/'. $phone
+        );
 
         return $this->transformer->transformResponse(new CustomerResponse(), $result);
     }
 
     public function customerAddresses(string $phone): array
     {
-        $item = $this->cache->getItem('apibundle_'.sha1('addresses'));
-        if (!$item->isHit()) {
-            try {
-                $result = $this->http
-                    ->request('POST', $this->uri . '/site/get_addresses_by_phone', [
-                        'body' => ['phone' => $phone]
-                    ])
-                    ->toArray();
-            } catch (ClientExceptionInterface $e) {
-                throw new \Exception('Некорректный запрос');
-            } catch (DecodingExceptionInterface $e) {
-                throw new \Exception('Некорректный ответ');
-            } catch (RedirectionExceptionInterface $e) {
-                throw new \Exception('Больше не обслуживается');
-            } catch (ServerExceptionInterface $e) {
-                throw new \Exception('Ошибка на сервере');
-            } catch (TransportExceptionInterface $e) {
-                throw new \Exception('Проблема с сетью');
-            }
-            $item->set($result);
-            $this->cache->save($item);
-            $this->addKey($item->getKey());
-        }
-        $result = $item->get();
+        $result = $this->makeRequest(
+            'addresses_'.$phone,
+            'POST',
+            $this->uri . '/site/get_addresses_by_phone',
+            [
+                'body' => ['phone' => $phone]
+            ]
+        );
 
         return $this->transformer->transformResponse(new AddressResponse(), $result);
     }
 
     public function customerBonuses(string $phone): BonusesResponse
     {
-        // TODO: Implement customerBonuses() method.
+        $result = $this->makeRequest(
+            'bonuses_'.$phone,
+            'POST',
+            $this->uri . '/site/get_bonus_balance_by_phone',
+            [
+                'body' => ['phone' => $phone]
+            ]
+        );
 
         return $this->transformer->transformResponse(new BonusesResponse(), []);
     }
@@ -120,6 +94,35 @@ class ApiManager implements ApiManagerInterface
         // TODO: Implement createOrder() method.
 
         return $this->transformer->transformResponse(new OrderResponse(), []);
+    }
+
+    public function makeRequest(string $key, string $method, string $uri, array $options = []): array
+    {
+        $item = $this->cache->getItem('apibundle_'.sha1($key));
+        if (!$item->isHit()) {
+            try {
+                $result = $this->http
+                    ->request($method, $uri, $options)
+                    ->toArray();
+            } catch (ClientExceptionInterface $e) {
+                throw new \Exception('Некорректный запрос');
+            } catch (DecodingExceptionInterface $e) {
+                throw new \Exception('Некорректный ответ');
+            } catch (RedirectionExceptionInterface $e) {
+                throw new \Exception('Больше не обслуживается');
+            } catch (ServerExceptionInterface $e) {
+                throw new \Exception('Ошибка на сервере');
+            } catch (TransportExceptionInterface $e) {
+                throw new \Exception('Проблема с сетью');
+            }
+            $item->set($result);
+            $this->cache->save($item);
+            $this->addKey($item->getKey());
+            dump($result);
+        }
+        $result = $item->get();
+
+        return $result;
     }
 
     public function resetKeys(): void

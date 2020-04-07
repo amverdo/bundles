@@ -19,11 +19,21 @@ interface ApiManagerInterface
      */
     public function resetKeys(): void;
 
-
     /**
      * Добавление уникального ключа в кэше
      */
     public function addKey(string $key): void;
+
+    /**
+     * Выполнение запроса
+     *
+     * @param string $key
+     * @param string $method
+     * @param string $uri
+     * @param array $options
+     * @return array
+     */
+    public function makeRequest(string $key, string $method, string $uri, array $options = []): array;
 
     /**
      * Данные клиента

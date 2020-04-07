@@ -13,6 +13,18 @@ use Homepizza\ApiBundle\DTO\Responses\TimeResponse;
 
 interface ApiManagerInterface
 {
+
+    /**
+     * Очитска кэша по ключам бандла
+     */
+    public function resetKeys(): void;
+
+
+    /**
+     * Добавление уникального ключа в кэше
+     */
+    public function addKey(string $key): void;
+
     /**
      * Данные клиента
      *

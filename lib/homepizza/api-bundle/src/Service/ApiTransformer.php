@@ -19,6 +19,7 @@ class ApiTransformer
      * @param $object
      * @param array $data
      * @return mixed
+     * @throws \Exception
      */
     public function transformResponse($object, array $data)
     {
@@ -37,9 +38,23 @@ class ApiTransformer
      * @param CustomerResponse $object
      * @param array $data
      * @return CustomerResponse
+     * @throws \Exception
      */
     private function toProfile(CustomerResponse $object, array $data)
     {
+        // Преобразуем адреса клиента
+        $data['addresses'] = $this->toAddresses(new AddressResponse(), $data);
+
+        // Преобразуем профиль с данными клиента
+        $object
+            ->setName($data['name'])
+            ->setPhone($data['phone'])
+            ->setEmail($data['email'])
+            ->setBonuses($data['bonuses'])
+            ->setAddresses($data['addresses'])
+            ->setPromo($data['promo'])
+        ;
+
         return $object;
     }
 
@@ -49,10 +64,26 @@ class ApiTransformer
      * @param AddressResponse $object
      * @param array $data
      * @return array
+     * @throws \Exception
      */
     private function toAddresses(AddressResponse $object, array $data)
     {
-        return [];
+        $addresses = [];
+        foreach ($data['addresses'] as $rawAddress) {
+            if (!empty($addresses)) $object = new AddressResponse();
+            $object
+                ->setAddress($rawAddress['address'])
+                ->setFias($rawAddress['street_fias_id'] ?? '')
+                ->setHouse($rawAddress['house'])
+                ->setRoom($rawAddress['room'])
+                ->setGateway($rawAddress['gateway'])
+                ->setLevel($rawAddress['level'])
+                ->setMinsum($rawAddress['minsum'])
+            ;
+            $addresses[] = $object;
+        }
+
+        return $addresses;
     }
 
     /**
@@ -64,7 +95,7 @@ class ApiTransformer
      */
     private function toBonuses(BonusesResponse $object, array $data)
     {
-        return $object;
+        return $object->setBalance($data['balance'] ?? 0);
     }
 
     /**

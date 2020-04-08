@@ -79,7 +79,7 @@ class ApiManager implements ApiManagerInterface
             ]
         );
 
-        return $this->transformer->transformResponse(new BonusesResponse(), []);
+        return $this->transformer->transformResponse(new BonusesResponse(), $result);
     }
 
     public function checkTime(Delivery $delivery, Order $order): TimeResponse
@@ -118,7 +118,6 @@ class ApiManager implements ApiManagerInterface
             $item->set($result);
             $this->cache->save($item);
             $this->addKey($item->getKey());
-            dump($result);
         }
         $result = $item->get();
 

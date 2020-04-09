@@ -15,14 +15,6 @@ class Delivery
     /* @var string $datetimeWant - Желаемое время доставки */
     private $datetimeWant;
 
-    /* @var array $address - Адрес доставки */
-    private $address = [
-        'address' => null,
-        'gateway' => null,
-        'level' => null,
-        'room' => null
-    ];
-
     /* @var bool $newAddress - Новый адрес */
     private $newAddress;
 
@@ -95,58 +87,6 @@ class Delivery
     public function setDatetimeWant(string $datetimeWant): Delivery
     {
         $this->datetimeWant = $datetimeWant;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAddressInfo(): array
-    {
-        return $this->address;
-    }
-
-    /**
-     * @param string $address
-     * @return Delivery
-     */
-    public function setAddress(string $address): Delivery
-    {
-        $this->address['address'] = $address;
-
-        return $this;
-    }
-
-    /**
-     * @param string $gateway
-     * @return Delivery
-     */
-    public function setAddressGateway(string $gateway): Delivery
-    {
-        $this->address['gateway'] = $gateway;
-
-        return $this;
-    }
-
-    /**
-     * @param int $level
-     * @return Delivery
-     */
-    public function setAddressLevel(int $level): Delivery
-    {
-        $this->address['level'] = $level;
-
-        return $this;
-    }
-
-    /**
-     * @param string $room
-     * @return Delivery
-     */
-    public function setAddressRoom(string $room): Delivery
-    {
-        $this->address['room'] = $room;
 
         return $this;
     }

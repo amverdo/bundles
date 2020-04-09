@@ -35,7 +35,7 @@ class HomeController extends AbstractController
     public function apiAction(): JsonResponse
     {
 //         $this->homepizza->resetKeys();
-        $result = $this->homepizza->customerBonuses('9120511868');
+        $result = $this->homepizza->customerProfile('9120511868');
         dump($result);
         die();
         return $this->json($result, 200);

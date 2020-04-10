@@ -103,6 +103,14 @@ class Customer
     }
 
     /**
+     * @return string
+     */
+    public function getAddress(): string
+    {
+        return $this->address['address'];
+    }
+
+    /**
      * @param string $address
      * @return Customer
      */

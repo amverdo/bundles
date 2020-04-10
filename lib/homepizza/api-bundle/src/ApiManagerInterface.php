@@ -9,6 +9,7 @@ use Homepizza\ApiBundle\DTO\Responses\AddressResponse;
 use Homepizza\ApiBundle\DTO\Responses\BonusesResponse;
 use Homepizza\ApiBundle\DTO\Responses\CustomerResponse;
 use Homepizza\ApiBundle\DTO\Responses\OrderResponse;
+use Homepizza\ApiBundle\DTO\Responses\TimeLimitResponse;
 use Homepizza\ApiBundle\DTO\Responses\TimeResponse;
 
 interface ApiManagerInterface
@@ -54,9 +55,9 @@ interface ApiManagerInterface
      * @param Customer $customer
      * @param Delivery $delivery
      * @param Order $order
-     * @return TimeResponse
+     * @return TimeResponse | TimeLimitResponse
      */
-    public function checkTime(Customer $customer, Delivery $delivery, Order $order): TimeResponse;
+    public function checkTime(Customer $customer, Delivery $delivery, Order $order);
 
     /**
      * Создание заказа

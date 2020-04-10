@@ -6,6 +6,7 @@ use Homepizza\ApiBundle\DTO\Responses\AddressResponse;
 use Homepizza\ApiBundle\DTO\Responses\BonusesResponse;
 use Homepizza\ApiBundle\DTO\Responses\CustomerResponse;
 use Homepizza\ApiBundle\DTO\Responses\OrderResponse;
+use Homepizza\ApiBundle\DTO\Responses\TimeLimitResponse;
 use Homepizza\ApiBundle\DTO\Responses\TimeResponse;
 
 /**
@@ -103,10 +104,29 @@ class ApiTransformer
      *
      * @param TimeResponse $object
      * @param array $data
-     * @return TimeResponse
+     * @return TimeResponse | TimeLimitResponse
      */
     private function toTime(TimeResponse $object, array $data)
     {
+        if ($data['result']) {
+            $object
+                ->setTime($data['datetime_current'])
+                ->setAllow($data['datetime_want_allow'])
+                ->setVariants($data['datetime_want_variants'] ?? [])
+                ->setSegment($data['region'])
+                ->setFreeKits($data['kits'])
+                ->setBonuses([
+                    'allowToPay' => $data['allow_bonus_to_pay'],
+                    'willBeAdded' => $data['how_count_bonus_add'],
+                    'willBeForDelivery' => $data['how_count_bonus_add_delivery_y'],
+                    'willBeForTakeAway' => $data['how_count_bonus_add_delivery_n']
+                ])
+            ;
+        }
+        else {
+            $object = new TimeLimitResponse();
+            // TODO: Описать DTO
+        }
         return $object;
     }
 

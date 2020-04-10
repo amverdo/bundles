@@ -46,27 +46,23 @@ class HomeController extends AbstractController
             ->setName('Алескандр')
             ->setPhone('9120511868')
             ->setEmail('is.malozemov@ya.ru')
-            ->setAddress('г. Екатеринбург, Индустрии д. 54')
+            ->setAddress('г Екатеринбург, ул Родонитовая, д 1')
         ;
 
         $delivery
             ->setTakeAway(false)
             ->setCurrentTime(false)
-            ->setDatetimeWant('2020-04-20 18:40:00')
+            ->setDatetimeWant('2020-04-10 18:40:00')
         ;
 
         $order
             ->setMenu([
                 [
-                    'id' => '123',
-                    'quantity' => 1
+//                    'id' => 'd645920e395fedad7bbbed0eca3fe2e0',
+                    'id' => '01882513d5fa7c329e940dda99b12147',
+                    'quantity' => 3
                 ]
             ])
-            ->setPaymentType('sberbank')
-            ->setPaymentOrderId('23')
-            ->setPaymentOrderNumber('123')
-            ->setPaymentBonuses(0)
-            ->setConfirmed(true)
         ;
 
         $result = $this->homepizza->checkTime($customer, $delivery, $order);

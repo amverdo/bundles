@@ -82,13 +82,32 @@ class ApiManager implements ApiManagerInterface
         return $this->transformer->transformResponse(new BonusesResponse(), $result);
     }
 
-    public function checkTime(Customer $customer, Delivery $delivery, Order $order): TimeResponse
+    public function checkTime(Customer $customer, Delivery $delivery, Order $order)
     {
         $this->validateRequestObjects($customer, $delivery, $order, true);
 
-        // TODO: Implement checkTime() method.
+        $result = $this->makeRequest(
+            '',
+            'POST',
+            $this->uri.'/site/get_order_time',
+            [
+                'body' => [
+                    'deffered' => !$delivery->isCurrentTime(),
+                    'datetime_want' => $delivery->getDatetimeWant() ?? '',
+                    'delivery' => !$delivery->isTakeAway(),
+                    'location' => $delivery->getLocation() ?? '',
+                    'customer' => [
+                        'name' => $customer->getName(),
+                        'phone' => $customer->getPhone(),
+                        'address' => $customer->getAddress()
+                    ],
+                    'menu' => $order->getMenu(),
+                    'comment' => $order->getComment()
+                ]
+            ]
+            );
 
-        return $this->transformer->transformResponse(new TimeResponse(), []);
+        return $this->transformer->transformResponse(new TimeResponse(), $result);
     }
 
     public function createOrder(Customer $customer, Delivery $delivery, Order $order): OrderResponse

@@ -5,39 +5,73 @@ namespace Homepizza\ApiBundle\DTO;
 
 class Order
 {
-    /* @var array $menu - Состав заказа */
+    /* @var array $menu - Состав заказа (*) */
     private $menu;
 
     /* @var array $payment - Информация о расчете */
     private $payment = [
         'type' => null,
         'bonuses' => null,
-        'details' => null
+        'details' => null,
+        'orderId' => null,
+        'orderNumber' => null
     ];
-
-    /* @var bool $deferred - Отложенный заказ? */
-    private $deferred;
 
     /* @var bool $confirmed - Подтвержденный заказ? */
     private $confirmed;
 
     /* @var int $kits - Выбрано наборов для роллов */
-    private $kits;
+    private $kits = 0;
 
     /* @var string $promocode - Примененный промокод */
-    private $promocode;
+    private $promocode = '';
 
     /* @var string $comment - Комментарий кухне */
-    private $comment;
+    private $comment = '';
 
     /**
      * Проверка заполненных полей для запроса
+     *
+     * @param bool $timeRequest
+     * @throws \Exception
      */
-    public function checkFields()
+    public function checkFields(bool $timeRequest = false)
     {
-        // TODO
-        // TODO в том чилсе, корректность меню
-        // TODO в том числе, наличие информации в онлайн-платеже (?)
+        // Меню и его корректность
+        if (!isset($this->menu)) throw new \Exception('Необходимо указать состав!');
+
+        foreach ($this->menu as $key => $position) {
+            if (!isset($position['id']) || !isset($position['quantity']))
+                throw new \Exception('Корректная позиция содрежит id и quantity');
+            if (gettype($position['id']) !== 'string' || gettype($position['quantity']) !== 'integer') {
+                throw new \Exception('Неверные типы, id позиции - string, quantity - integer');
+            }
+            if (empty($position['id'])) throw new \Exception('Все id блюд должны быть указаны!');
+            if ($position['quantity'] <= 0) throw new \Exception('Кол-во блюда не может быть равным 0');
+        }
+
+       if (!$timeRequest) {
+           // Наличие payment_type
+           if (!isset($this->payment['type'])) throw new \Exception('Для оформления укажите тип оплаты');
+
+           if (!in_array($this->payment['type'], ['cash', 'cashless', 'sberbank']))
+               throw new \Exception('Указан неизвестный тип оплаты (cash, cashless, sberbank)');
+
+           if ($this->payment['type'] === 'sberbank') {
+               // Системный ID заказа в Сбербанке
+               if (!isset($this->payment['orderId'])) throw new \Exception('Укажите orderId от Сбербанка!');
+
+               // Номер заказа в Сбербанке
+               if (!isset($this->payment['orderNumber']))
+                   throw new \Exception('Укажите orderNumber от Сбербанка');
+           }
+
+           // Кол-во использованных бонусов
+           if (!isset($this->payment['bonuses'])) throw new \Exception('Укажите использованные бонусы');
+
+           // Наличие метки, о подтвержденности заказа
+           if (!isset($this->confirmed)) throw new \Exception('Является ли заказ подтвержденным?');
+       }
     }
 
     /**
@@ -96,6 +130,104 @@ class Order
     public function setPaymentOnlineInfo(array $paymentsDetails): Order
     {
         $this->payment['details'] = $paymentsDetails;
+
+        return $this;
+    }
+
+    /**
+     * @param string $orderId
+     * @return Order
+     */
+    public function setPaymentOrderId(string $orderId): Order
+    {
+        $this->payment['orderId'] = $orderId;
+
+        return $this;
+    }
+
+    /**
+     * @param string $orderNumber
+     * @return Order
+     */
+    public function setPaymentOrderNumber(string $orderNumber): Order
+    {
+        $this->payment['orderNumber'] = $orderNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConfirmed(): bool
+    {
+        return $this->confirmed;
+    }
+
+    /**
+     * @param bool $confirmed
+     * @return Order
+     */
+    public function setConfirmed(bool $confirmed): Order
+    {
+        $this->confirmed = $confirmed;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getKits(): int
+    {
+        return $this->kits;
+    }
+
+    /**
+     * @param int $kits
+     * @return Order
+     */
+    public function setKits(int $kits): Order
+    {
+        $this->kits = $kits;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPromocode(): string
+    {
+        return $this->promocode;
+    }
+
+    /**
+     * @param string $promocode
+     * @return Order
+     */
+    public function setPromocode(string $promocode): Order
+    {
+        $this->promocode = $promocode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     * @return Order
+     */
+    public function setComment(string $comment): Order
+    {
+        $this->comment = $comment;
 
         return $this;
     }

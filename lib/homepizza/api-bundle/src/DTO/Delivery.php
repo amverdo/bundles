@@ -6,8 +6,8 @@ namespace Homepizza\ApiBundle\DTO;
 
 class Delivery
 {
-    /* @var bool $carryout - Самовывоз */
-    private $carryout;
+    /* @var bool $takeAway - Самовывоз */
+    private $takeAway;
 
     /* @var string $location - Точка самовывоза */
     private $location;
@@ -15,10 +15,13 @@ class Delivery
     /* @var string $datetimeWant - Желаемое время доставки */
     private $datetimeWant;
 
-    /* @var bool $newAddress - Новый адрес */
-    private $newAddress;
+    /* @var bool $currentTime - Доставка на текущее время? ( для deferred) */
+    private $currentTime;
 
-    /* @var bool $dadataInformation - Информация от dadata для новых адресов */
+    /* @var bool $newAddress - Новый адрес */
+    private $newAddress = false;
+
+    /* @var array $dadataInformation - Информация от dadata для новых адресов */
     private $dadataInformation;
 
     /* @var string $comment - Комментарий к адресу доставки */
@@ -27,28 +30,39 @@ class Delivery
     /**
      * Проверка заполненных полей
      *
-     * @param bool $forTime
+     * @throws \Exception
      */
-    public function checkFields($forTime = true)
+    public function checkFields()
     {
-        // TODO
+        if (!isset($this->takeAway)) throw new \Exception('Укажите, нужен ли самовывоз?');
+        if ($this->takeAway) {
+            if (!isset($this->location)) throw new \Exception('Необходимо указать точку самовывоза!');
+        }
+        if ($this->newAddress) {
+            if (!isset($this->dadataInformation))
+                throw new \Exception('Нужно указать fias для новых адресов');
+        }
+        if (!isset($this->currentTime)) throw new \Exception('Укажите, доставка на текущее время?');
+        if (!$this->currentTime) {
+            if (!isset($this->datetimeWant)) throw new \Exception('Укажите время для доставки.');
+        }
     }
 
     /**
      * @return bool
      */
-    public function isCarryout(): bool
+    public function isTakeAway(): bool
     {
-        return $this->carryout;
+        return $this->takeAway;
     }
 
     /**
-     * @param bool $carryout
+     * @param bool $takeAway
      * @return Delivery
      */
-    public function setCarryout(bool $carryout): Delivery
+    public function setTakeAway(bool $takeAway): Delivery
     {
-        $this->carryout = $carryout;
+        $this->takeAway = $takeAway;
 
         return $this;
     }
@@ -111,9 +125,9 @@ class Delivery
     }
 
     /**
-     * @return bool
+     * @return array
      */
-    public function isDadataInformation(): bool
+    public function isDadataInformation(): array
     {
         return $this->dadataInformation;
     }
@@ -144,6 +158,25 @@ class Delivery
     public function setComment(string $comment): Delivery
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCurrentTime(): bool
+    {
+        return $this->currentTime;
+    }
+
+    /**
+     * @param bool $currentTime
+     * @return Delivery
+     */
+    public function setCurrentTime(bool $currentTime): Delivery
+    {
+        $this->currentTime = $currentTime;
 
         return $this;
     }

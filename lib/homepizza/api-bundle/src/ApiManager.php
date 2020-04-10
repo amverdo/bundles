@@ -82,8 +82,10 @@ class ApiManager implements ApiManagerInterface
         return $this->transformer->transformResponse(new BonusesResponse(), $result);
     }
 
-    public function checkTime(Delivery $delivery, Order $order): TimeResponse
+    public function checkTime(Customer $customer, Delivery $delivery, Order $order): TimeResponse
     {
+        $this->validateRequestObjects($customer, $delivery, $order, true);
+
         // TODO: Implement checkTime() method.
 
         return $this->transformer->transformResponse(new TimeResponse(), []);
@@ -91,12 +93,31 @@ class ApiManager implements ApiManagerInterface
 
     public function createOrder(Customer $customer, Delivery $delivery, Order $order): OrderResponse
     {
+        $this->validateRequestObjects($customer, $delivery, $order);
+
         // TODO: Implement createOrder() method.
 
         return $this->transformer->transformResponse(new OrderResponse(), []);
     }
 
-    public function makeRequest(string $key, string $method, string $uri, array $options = []): array
+    private function validateRequestObjects(Customer $customer, Delivery $delivery, Order $order, bool $time = false)
+    {
+        $customer->checkFields();
+        $delivery->checkFields();
+        $order->checkFields($time);
+    }
+
+    /**
+     * Выполнение запроса и кэш по ключу (пустой ключ - без кэша)
+     *
+     * @param string $key
+     * @param string $method
+     * @param string $uri
+     * @param array $options
+     * @return array
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    private function makeRequest(string $key, string $method, string $uri, array $options = []): array
     {
         $item = $this->cache->getItem('apibundle_'.sha1($key));
         if (!$item->isHit()) {
@@ -116,8 +137,10 @@ class ApiManager implements ApiManagerInterface
                 throw new \Exception('Проблема с сетью');
             }
             $item->set($result);
-            $this->cache->save($item);
-            $this->addKey($item->getKey());
+            if (!empty($key)) {
+                $this->cache->save($item);
+                $this->addKey($item->getKey());
+            }
         }
         $result = $item->get();
 

@@ -28,7 +28,13 @@ class Customer
      */
     public function checkFields()
     {
-        // TODO
+        $success = isset($this->name) && isset($this->phone) && isset($this->address['address']);
+        if (!$success) throw new \Exception('Не заполнены необходимые поля');
+        if (preg_match("/^[0-9]{10,10}+$/", trim($this->phone)) && (int)substr(trim($this->phone), 0, 1) === 9) {
+        }
+        else {
+            throw new \Exception('Телефон должен начинаться с 9-ки! Без лишних символов и пробелов.');
+        }
     }
 
     /**

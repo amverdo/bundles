@@ -64,9 +64,16 @@ class HomeController extends AbstractController
                     'quantity' => 5
                 ]
             ])
+            ->setPaymentType('cash')
+            ->setPaymentBonuses(0)
+            ->setConfirmed(true)
         ;
 
         $result = $this->homepizza->checkTime($customer, $delivery, $order);
+        dump($result);
+        $result = $this->homepizza->createOrder($customer, $delivery, $order);
+        dump($result);
+        die();
 
         return $this->json($result->toArray(), 200);
     }

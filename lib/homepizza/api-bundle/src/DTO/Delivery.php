@@ -125,18 +125,18 @@ class Delivery
     }
 
     /**
-     * @return array
+     * @return null | array
      */
-    public function isDadataInformation(): array
+    public function getDadataInformation(): ?array
     {
         return $this->dadataInformation;
     }
 
     /**
-     * @param bool $dadataInformation
+     * @param array $dadataInformation
      * @return Delivery
      */
-    public function setDadataInformation(bool $dadataInformation): Delivery
+    public function setDadataInformation(array $dadataInformation): Delivery
     {
         $this->dadataInformation = $dadataInformation;
 
@@ -144,9 +144,9 @@ class Delivery
     }
 
     /**
-     * @return string
+     * @return null | string
      */
-    public function getComment(): string
+    public function getComment(): ?string
     {
         return $this->comment;
     }

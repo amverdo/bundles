@@ -122,6 +122,14 @@ class Customer
     }
 
     /**
+     * @return null|string
+     */
+    public function getAddressGateway(): ?string
+    {
+        return $this->address['gateway'];
+    }
+
+    /**
      * @param string $gateway
      * @return Customer
      */
@@ -133,6 +141,14 @@ class Customer
     }
 
     /**
+     * @return null|int
+     */
+    public function getAddressLevel(): ?int
+    {
+        return $this->address['level'];
+    }
+
+    /**
      * @param int $level
      * @return Customer
      */
@@ -141,6 +157,14 @@ class Customer
         $this->address['level'] = $level;
 
         return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getAddressRoom(): ?string
+    {
+        return $this->address['room'];
     }
 
     /**

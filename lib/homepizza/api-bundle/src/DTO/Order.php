@@ -17,6 +17,9 @@ class Order
         'orderNumber' => null
     ];
 
+    /* @var int $payback - Сдача с купюры */
+    private $payback = 0;
+
     /* @var bool $confirmed - Подтвержденный заказ? */
     private $confirmed;
 
@@ -28,6 +31,9 @@ class Order
 
     /* @var string $comment - Комментарий кухне */
     private $comment = '';
+
+    /* @var array $utm - Метки для определения эффективных каналов привлечения */
+    private $utm;
 
     /**
      * Проверка заполненных полей для запроса
@@ -102,6 +108,14 @@ class Order
     }
 
     /**
+     * @return string
+     */
+    public function getPaymentType(): string
+    {
+        return $this->payment['type'];
+    }
+
+    /**
      * @param string $type
      * @return Order
      */
@@ -110,6 +124,14 @@ class Order
         $this->payment['type'] = $type;
 
         return $this;
+    }
+
+    /**
+     * @return null | int
+     */
+    public function getPaymentBonuses(): ?int
+    {
+        return $this->payment['bonuses'];
     }
 
     /**
@@ -124,6 +146,14 @@ class Order
     }
 
     /**
+     * @return null|array
+     */
+    public function getPaymentDetails(): ?array
+    {
+        return $this->payment['details'];
+    }
+
+    /**
      * @param array $paymentsDetails
      * @return Order
      */
@@ -135,6 +165,14 @@ class Order
     }
 
     /**
+     * @return null|string
+     */
+    public function getPaymentOrderId(): ?string
+    {
+        return $this->payment['orderId'];
+    }
+
+    /**
      * @param string $orderId
      * @return Order
      */
@@ -143,6 +181,14 @@ class Order
         $this->payment['orderId'] = $orderId;
 
         return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPaymentOrderNumber(): ?string
+    {
+        return $this->payment['orderNumber'];
     }
 
     /**
@@ -214,9 +260,9 @@ class Order
     }
 
     /**
-     * @return string
+     * @return null | string
      */
-    public function getComment(): string
+    public function getComment(): ?string
     {
         return $this->comment;
     }
@@ -228,6 +274,44 @@ class Order
     public function setComment(string $comment): Order
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * @return null | array
+     */
+    public function getUtm(): ?array
+    {
+        return $this->utm;
+    }
+
+    /**
+     * @param array $utm
+     * @return Order
+     */
+    public function setUtm(array $utm): Order
+    {
+        $this->utm = $utm;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPayback(): int
+    {
+        return $this->payback;
+    }
+
+    /**
+     * @param int $payback
+     * @return Order
+     */
+    public function setPayback(int $payback): Order
+    {
+        $this->payback = $payback;
 
         return $this;
     }

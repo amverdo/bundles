@@ -145,6 +145,16 @@ class ApiTransformer
      */
     private function toOrder(OrderResponse $object, array $data)
     {
+        $object
+            ->setResult($data['result'])
+            ->setMessage($data['message'] ?? '')
+            ->setSegment($data['region'])
+            ->setTime([
+                'current' => $data['datetime_current'],
+                'wantAllow' => $data['datetime_want_allow'],
+                'variants' => $data['datetime_want_variants'] ?? []
+            ])
+        ;
         return $object;
     }
 }

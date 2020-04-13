@@ -61,7 +61,7 @@ class ApiManager implements ApiManagerInterface
             'POST',
             $this->uri . '/site/get_addresses_by_phone',
             [
-                'body' => ['phone' => $phone]
+                'json' => ['phone' => $phone]
             ]
         );
 
@@ -75,7 +75,7 @@ class ApiManager implements ApiManagerInterface
             'POST',
             $this->uri . '/site/get_bonus_balance_by_phone',
             [
-                'body' => ['phone' => $phone]
+                'json' => ['phone' => $phone]
             ]
         );
 
@@ -91,7 +91,7 @@ class ApiManager implements ApiManagerInterface
             'POST',
             $this->uri.'/site/get_order_time',
             [
-                'body' => [
+                'json' => [
                     'deffered' => !$delivery->isCurrentTime(),
                     'datetime_want' => $delivery->isCurrentTime() ? '' : ($delivery->getDatetimeWant() ?? ''),
                     'delivery' => !$delivery->isTakeAway(),
@@ -105,7 +105,7 @@ class ApiManager implements ApiManagerInterface
                     'comment' => $order->getComment()
                 ]
             ]
-            );
+        );
 
         return $this->transformer->transformResponse(new TimeResponse(), $result);
     }
@@ -114,9 +114,43 @@ class ApiManager implements ApiManagerInterface
     {
         $this->validateRequestObjects($customer, $delivery, $order);
 
-        // TODO: Implement createOrder() method.
+        $result = $this->makeRequest(
+            '',
+            'POST',
+            $this->uri.'/site/create_order',
+            [
+                'json' => [
+                    'deffered' => !$delivery->isCurrentTime(),
+                    'datetime_want' => $delivery->isCurrentTime() ? "" : ($delivery->getDatetimeWant() ?? ""),
+                    'payment_type' => $order->getPaymentType(),
+                    'orderNumber' => $order->getPaymentOrderNumber() ?? "",
+                    'orderId' => $order->getPaymentOrderId() ?? "",
+                    'delivery' => !$delivery->isTakeAway(),
+                    'confirmed' => $order->isConfirmed(),
+                    'location' => $delivery->getLocation() ?? "",
+                    'customer' => [
+                        'name' => $customer->getName(),
+                        'phone' => $customer->getPhone(),
+                        'address' => $customer->getAddress(),
+                        'email' => $customer->getEmail() ?? "",
+                        'gateway' => $customer->getAddressGateway() ?? "",
+                        'level' => $customer->getAddressLevel() ?? "",
+                        'room' => $customer->getAddressRoom() ?? "",
+                        'comment' => $delivery->getComment() ?? ""
+                    ],
+                    'menu' => $order->getMenu(),
+                    'payback' => $order->getPayback() ?? 0,
+                    'bonus_to_pay' => $order->getPaymentBonuses() ?? 0,
+                    'kits' => $order->getKits() ?? 0,
+                    'comment' => $order->getComment() ?? "",
+                    'payment_details' => $order->getPaymentDetails() ?? [],
+                    'dadata' => $delivery->getDadataInformation() ?? [],
+                    'utm' => $order->getUtm() ?? "",
+                ]
+            ]
+        );
 
-        return $this->transformer->transformResponse(new OrderResponse(), []);
+        return $this->transformer->transformResponse(new OrderResponse(), $result);
     }
 
     private function validateRequestObjects(Customer $customer, Delivery $delivery, Order $order, bool $time = false)

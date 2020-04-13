@@ -111,9 +111,9 @@ class ApiTransformer
         if ($data['result']) {
             $object
                 ->setTime($data['datetime_current'])
-                ->setAllow($data['datetime_want_allow'])
+                ->setAllow($data['datetime_want_allow'] ?? $data['result'])
                 ->setVariants($data['datetime_want_variants'] ?? [])
-                ->setSegment($data['region'])
+                ->setSegment($data['region'] ?? '')
                 ->setFreeKits($data['kits'])
                 ->setBonuses([
                     'allowToPay' => $data['allow_bonus_to_pay'],
@@ -121,11 +121,17 @@ class ApiTransformer
                     'willBeForDelivery' => $data['how_count_bonus_add_delivery_y'],
                     'willBeForTakeAway' => $data['how_count_bonus_add_delivery_n']
                 ])
+                ->setActiveLocations($data['active_locations'] ?? []);
             ;
         }
         else {
             $object = new TimeLimitResponse();
-            // TODO: Описать DTO
+            $object
+                ->setMessage($data['result_comment'])
+                ->setTime($data['datetime_current'])
+                ->setFreeKits($data['kits'])
+                ->setSegment($data['region'])
+            ;
         }
         return $object;
     }

@@ -51,23 +51,23 @@ class HomeController extends AbstractController
 
         $delivery
             ->setTakeAway(false)
+            ->setLocation('ул. 8 марта 187')
             ->setCurrentTime(false)
-            ->setDatetimeWant('2020-04-10 18:40:00')
+            ->setDatetimeWant('2020-04-14 13:25:00')
         ;
 
         $order
             ->setMenu([
                 [
-//                    'id' => 'd645920e395fedad7bbbed0eca3fe2e0',
-                    'id' => '01882513d5fa7c329e940dda99b12147',
-                    'quantity' => 3
+                    'id' => '7cbbc409ec990f19c78c75bd1e06f215',
+//                    'id' => '01882513d5fa7c329e940dda99b12147',
+                    'quantity' => 5
                 ]
             ])
         ;
 
         $result = $this->homepizza->checkTime($customer, $delivery, $order);
-        dump($result);
-        die();
-        return $this->json($result, 200);
+
+        return $this->json($result->toArray(), 200);
     }
 }

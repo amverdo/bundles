@@ -93,7 +93,7 @@ class ApiManager implements ApiManagerInterface
             [
                 'body' => [
                     'deffered' => !$delivery->isCurrentTime(),
-                    'datetime_want' => $delivery->getDatetimeWant() ?? '',
+                    'datetime_want' => $delivery->isCurrentTime() ? '' : ($delivery->getDatetimeWant() ?? ''),
                     'delivery' => !$delivery->isTakeAway(),
                     'location' => $delivery->getLocation() ?? '',
                     'customer' => [

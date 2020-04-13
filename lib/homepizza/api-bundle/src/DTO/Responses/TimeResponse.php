@@ -10,27 +10,30 @@ use Homepizza\ApiBundle\DTO\AbstractDTO;
 class TimeResponse extends AbstractDTO
 {
     /* @var string $time - Текущее доступное время */
-    private $time;
+    protected $time;
 
     /* @var bool $allow - Доступно для оформления? */
-    private $allow;
+    protected $allow;
 
     /* @var array $variants - Варианты доступного времени */
-    private $variants;
+    protected $variants;
 
     /* @var string $segment - Район/Сегмент доставки */
-    private $segment;
+    protected $segment;
 
     /* @var int $freeKits - Кол-во доступных наборов */
-    private $freeKits;
+    protected $freeKits;
 
     /* @var array $bonuses - Информация о бонусах */
-    private $bonuses = [
+    protected $bonuses = [
         'allowToPay' => 0,
         'willBeAdded' => 0,
         'willBeForDelivery' => 0,
         'willBeForTakeAway' => 0
     ];
+
+    /* @var array $activeLocations - Активные филиалы, в случае самовывоза */
+    protected $activeLocations;
 
     /**
      * @return string
@@ -161,9 +164,31 @@ class TimeResponse extends AbstractDTO
 
     /**
      * @param array $bonuses
+     * @return TimeResponse
      */
-    public function setBonuses(array $bonuses): void
+    public function setBonuses(array $bonuses): TimeResponse
     {
         $this->bonuses = $bonuses;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getActiveLocations(): array
+    {
+        return $this->activeLocations;
+    }
+
+    /**
+     * @param array $activeLocations
+     * @return TimeResponse
+     */
+    public function setActiveLocations(array $activeLocations): TimeResponse
+    {
+        $this->activeLocations = $activeLocations;
+
+        return $this;
     }
 }

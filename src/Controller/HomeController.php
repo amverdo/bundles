@@ -71,9 +71,12 @@ class HomeController extends AbstractController
 
         $result = $this->homepizza->checkTime($customer, $delivery, $order);
         dump($result);
-        $result = $this->homepizza->createOrder($customer, $delivery, $order);
-        dump($result->isResult());
+        $response = $this->homepizza->customerProfile('9120511868');
+        dump($response);
         die();
+//        $result = $this->homepizza->createOrder($customer, $delivery, $order);
+//        dump($result->isResult());
+//        die();
 
         return $this->json($result->toArray(), 200);
     }

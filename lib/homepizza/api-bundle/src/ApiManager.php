@@ -45,6 +45,7 @@ class ApiManager implements ApiManagerInterface
 
     public function customerProfile(string $phone): CustomerResponse
     {
+        $this->checkValidPhone($phone);
         $result = $this->makeRequest(
             'profile_'.$phone,
             'GET',
@@ -56,6 +57,7 @@ class ApiManager implements ApiManagerInterface
 
     public function customerAddresses(string $phone): array
     {
+        $this->checkValidPhone($phone);
         $result = $this->makeRequest(
             'addresses_'.$phone,
             'POST',
@@ -70,6 +72,7 @@ class ApiManager implements ApiManagerInterface
 
     public function customerBonuses(string $phone): BonusesResponse
     {
+        $this->checkValidPhone($phone);
         $result = $this->makeRequest(
             'bonuses_'.$phone,
             'POST',
@@ -158,6 +161,15 @@ class ApiManager implements ApiManagerInterface
         $customer->checkFields();
         $delivery->checkFields();
         $order->checkFields($time);
+    }
+
+    private function checkValidPhone(string $phone)
+    {
+        if (preg_match("/^[0-9]{10,10}+$/", trim($phone)) && (int)substr(trim($phone), 0, 1) === 9) {
+        }
+        else {
+            throw new \Exception('Телефон должен начинаться с 9-ки! Без лишних символов и пробелов.');
+        }
     }
 
     /**

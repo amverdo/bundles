@@ -9,6 +9,7 @@ use Homepizza\ApiBundle\DTO\Order;
 use Homepizza\ApiBundle\DTO\Responses\AddressResponse;
 use Homepizza\ApiBundle\DTO\Responses\BonusesResponse;
 use Homepizza\ApiBundle\DTO\Responses\CustomerResponse;
+use Homepizza\ApiBundle\DTO\Responses\KitsResponse;
 use Homepizza\ApiBundle\DTO\Responses\OrderResponse;
 use Homepizza\ApiBundle\DTO\Responses\TimeResponse;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -154,6 +155,29 @@ class ApiManager implements ApiManagerInterface
         );
 
         return $this->transformer->transformResponse(new OrderResponse(), $result);
+    }
+
+    public function checkFreeKits(Order $order): KitsResponse
+    {
+        $order->checkFields(true);
+        $menu = $order->getMenu();
+        $key = '';
+        foreach ($menu as $position) {
+            $key .= $position['id'];
+        }
+
+        $result = $this->makeRequest(
+          sha1($key),
+          'POST',
+            $this->uri.'/site/get_kits',
+            [
+                'json' => [
+                    'menu' => $menu
+                ]
+            ]
+        );
+
+        return $this->transformer->transformResponse(new KitsResponse(), $result);
     }
 
     private function validateRequestObjects(Customer $customer, Delivery $delivery, Order $order, bool $time = false)

@@ -38,10 +38,10 @@ class Order
     /**
      * Проверка заполненных полей для запроса
      *
-     * @param bool $timeRequest
+     * @param bool $beforeCreate
      * @throws \Exception
      */
-    public function checkFields(bool $timeRequest = false)
+    public function checkFields(bool $beforeCreate = false)
     {
         // Меню и его корректность
         if (!isset($this->menu)) throw new \Exception('Необходимо указать состав!');
@@ -56,7 +56,7 @@ class Order
             if ($position['quantity'] <= 0) throw new \Exception('Кол-во блюда не может быть равным 0');
         }
 
-       if (!$timeRequest) {
+       if (!$beforeCreate) {
            // Наличие payment_type
            if (!isset($this->payment['type'])) throw new \Exception('Для оформления укажите тип оплаты');
 

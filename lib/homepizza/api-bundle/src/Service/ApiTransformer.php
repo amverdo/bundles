@@ -5,6 +5,7 @@ namespace Homepizza\ApiBundle\Service;
 use Homepizza\ApiBundle\DTO\Responses\AddressResponse;
 use Homepizza\ApiBundle\DTO\Responses\BonusesResponse;
 use Homepizza\ApiBundle\DTO\Responses\CustomerResponse;
+use Homepizza\ApiBundle\DTO\Responses\KitsResponse;
 use Homepizza\ApiBundle\DTO\Responses\OrderResponse;
 use Homepizza\ApiBundle\DTO\Responses\TimeLimitResponse;
 use Homepizza\ApiBundle\DTO\Responses\TimeResponse;
@@ -29,6 +30,7 @@ class ApiTransformer
         if ($object instanceof BonusesResponse) $object = $this->toBonuses($object, $data);
         if ($object instanceof TimeResponse) $object = $this->toTime($object, $data);
         if ($object instanceof OrderResponse) $object = $this->toOrder($object, $data);
+        if ($object instanceof KitsResponse) $object = $this->toKits($object, $data);
 
         return $object;
     }
@@ -97,6 +99,17 @@ class ApiTransformer
     private function toBonuses(BonusesResponse $object, array $data)
     {
         return $object->setBalance($data['balance'] ?? 0);
+    }
+
+    private function toKits(KitsResponse $object, array $data)
+    {
+        $object
+            ->setKits($data['kits'])
+            ->setShowMoneyKits($data['additional_allow'])
+            ->setPriceKits($data['additional_price'] ?? 0)
+        ;
+
+        return $object;
     }
 
     /**

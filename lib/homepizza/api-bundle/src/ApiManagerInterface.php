@@ -8,13 +8,13 @@ use Homepizza\ApiBundle\DTO\Order;
 use Homepizza\ApiBundle\DTO\Responses\AddressResponse;
 use Homepizza\ApiBundle\DTO\Responses\BonusesResponse;
 use Homepizza\ApiBundle\DTO\Responses\CustomerResponse;
+use Homepizza\ApiBundle\DTO\Responses\KitsResponse;
 use Homepizza\ApiBundle\DTO\Responses\OrderResponse;
 use Homepizza\ApiBundle\DTO\Responses\TimeLimitResponse;
 use Homepizza\ApiBundle\DTO\Responses\TimeResponse;
 
 interface ApiManagerInterface
 {
-
     /**
      * Очитска кэша по ключам бандла
      */
@@ -22,6 +22,7 @@ interface ApiManagerInterface
 
     /**
      * Добавление уникального ключа в кэше
+     * @param string $key
      */
     public function addKey(string $key): void;
 
@@ -68,4 +69,13 @@ interface ApiManagerInterface
      * @return OrderResponse
      */
     public function createOrder(Customer $customer, Delivery $delivery, Order $order): OrderResponse;
+
+
+    /**
+     * Проверка доступных наборов
+     *
+     * @param Order $order
+     * @return KitsResponse
+     */
+    public function checkFreeKits(Order $order): KitsResponse;
 }

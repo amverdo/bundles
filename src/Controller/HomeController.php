@@ -62,6 +62,11 @@ class HomeController extends AbstractController
                     'id' => '7cbbc409ec990f19c78c75bd1e06f215',
 //                    'id' => '01882513d5fa7c329e940dda99b12147',
                     'quantity' => 5
+                ],
+                [
+//                    'id' => '7cbbc409ec990f19c78c75bd1e06f215',
+                    'id' => '01882513d5fa7c329e940dda99b12147',
+                    'quantity' => 5
                 ]
             ])
             ->setPaymentType('cash')
@@ -69,10 +74,13 @@ class HomeController extends AbstractController
             ->setConfirmed(true)
         ;
 
-        $result = $this->homepizza->checkTime($customer, $delivery, $order);
-        dump($result);
-        $response = $this->homepizza->customerProfile('9120511868');
-        dump($response);
+        $result = $this->homepizza->checkFreeKits($order);
+        dump($result->toArray());
+
+//        $result = $this->homepizza->checkTime($customer, $delivery, $order);
+//        dump($result);
+//        $response = $this->homepizza->customerProfile('9120511868');
+//        dump($response);
         die();
 //        $result = $this->homepizza->createOrder($customer, $delivery, $order);
 //        dump($result->isResult());

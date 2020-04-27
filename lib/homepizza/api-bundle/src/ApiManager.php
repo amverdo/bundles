@@ -163,7 +163,7 @@ class ApiManager implements ApiManagerInterface
         $menu = $order->getMenu();
         $key = '';
         foreach ($menu as $position) {
-            $key .= $position['id'];
+            $key .= $position['id'].'_'.$position['quantity'];
         }
 
         $result = $this->makeRequest(

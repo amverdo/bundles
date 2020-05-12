@@ -161,10 +161,10 @@ class ApiTransformer
         $object
             ->setResult($data['result'])
             ->setMessage($data['message'] ?? '')
-            ->setSegment($data['region'])
+            ->setSegment($data['region'] ?? '')
             ->setTime([
                 'current' => $data['datetime_current'],
-                'wantAllow' => $data['datetime_want_allow'],
+                'wantAllow' => $data['datetime_want_allow'] ?? false,
                 'variants' => $data['datetime_want_variants'] ?? []
             ])
         ;

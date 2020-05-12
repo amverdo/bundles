@@ -72,6 +72,8 @@ class HomeController extends AbstractController
             ->setPaymentType('cash')
             ->setPaymentBonuses(0)
             ->setConfirmed(true)
+            ->setPaymentOrderId('')
+            ->setPaymentOrderNumber('')
         ;
 
         $result = $this->homepizza->checkFreeKits($order);

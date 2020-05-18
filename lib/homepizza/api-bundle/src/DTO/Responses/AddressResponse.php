@@ -156,18 +156,18 @@ class AddressResponse extends AbstractDTO
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getLevel(): int
+    public function getLevel(): ?int
     {
         return $this->level;
     }
 
     /**
-     * @param int $level
+     * @param $level
      * @return AddressResponse
      */
-    public function setLevel(int $level): AddressResponse
+    public function setLevel($level): AddressResponse
     {
         $this->level = $level;
 

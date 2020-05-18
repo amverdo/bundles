@@ -78,10 +78,10 @@ class ApiTransformer
                 ->setAddress($rawAddress['address'])
                 ->setFias($rawAddress['street_fias_id'] ?? '')
                 ->setHouse($rawAddress['house'])
-                ->setRoom($rawAddress['room'])
-                ->setGateway($rawAddress['gateway'])
-                ->setLevel($rawAddress['level'])
-                ->setMinsum($rawAddress['minsum'])
+                ->setRoom($rawAddress['room'] ?? '')
+                ->setGateway($rawAddress['gateway'] ?? '')
+                ->setLevel((int)$rawAddress['level'] ?? '')
+                ->setMinsum((int)$rawAddress['minsum'] ?? 0)
             ;
             $addresses[] = $object;
         }

@@ -134,8 +134,9 @@ class ApiTransformer
                     'willBeForDelivery' => $data['how_count_bonus_add_delivery_y'],
                     'willBeForTakeAway' => $data['how_count_bonus_add_delivery_n']
                 ])
+                ->setPrice($data['price'])
+                ->setPayback($data['payback'])
                 ->setActiveLocations($data['active_locations'] ?? []);
-            ;
         }
         else {
             $object = new TimeLimitResponse();

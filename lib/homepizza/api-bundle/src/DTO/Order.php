@@ -110,7 +110,7 @@ class Order
     /**
      * @return string
      */
-    public function getPaymentType(): string
+    public function getPaymentType(): ?string
     {
         return $this->payment['type'];
     }

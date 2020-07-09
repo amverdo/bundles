@@ -54,7 +54,11 @@ class HomeController extends AbstractController
             ->setDatetimeWant("2020-07-09 18:40:00")
         ;
 
-        $order->setMenu([
+        $order
+            ->setKits(0)
+            ->setPaymentBonuses(0)
+            ->setPaymentType('cashless')
+            ->setMenu([
             [
                 "id" => "38b3eff8baf56627478ec76a704e9b52",
                 "quantity" => 2

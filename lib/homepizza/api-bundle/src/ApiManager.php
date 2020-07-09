@@ -98,6 +98,7 @@ class ApiManager implements ApiManagerInterface
                 'json' => [
                     'deffered' => !$delivery->isCurrentTime(),
                     'datetime_want' => $delivery->isCurrentTime() ? '' : ($delivery->getDatetimeWant() ?? ''),
+                    'payment_type' => $order->getPaymentType() ?? '',
                     'delivery' => !$delivery->isTakeAway(),
                     'location' => $delivery->getLocation() ?? '',
                     'customer' => [
@@ -106,7 +107,9 @@ class ApiManager implements ApiManagerInterface
                         'address' => $customer->getAddress()
                     ],
                     'menu' => $order->getMenu(),
-                    'comment' => $order->getComment()
+                    'comment' => $order->getComment(),
+                    'kits' => $order->getKits() ?? 0,
+                    'bonus' => $order->getPaymentBonuses() ?? 0
                 ]
             ]
         );

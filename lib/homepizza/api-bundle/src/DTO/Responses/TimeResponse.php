@@ -35,6 +35,12 @@ class TimeResponse extends AbstractDTO
     /* @var array $activeLocations - Активные филиалы, в случае самовывоза */
     protected $activeLocations;
 
+    /* @var int $price - Цена переданного меню с учетом вычетов */
+    protected $price;
+
+    /* @var array $payback - Варианты сдачи, в зависимости от суммы переданного меню */
+    protected $payback = [];
+
     /**
      * @return string
      */
@@ -188,6 +194,44 @@ class TimeResponse extends AbstractDTO
     public function setActiveLocations(array $activeLocations): TimeResponse
     {
         $this->activeLocations = $activeLocations;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param int $price
+     * @return TimeResponse
+     */
+    public function setPrice(int $price): TimeResponse
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPayback(): array
+    {
+        return $this->payback;
+    }
+
+    /**
+     * @param array $payback
+     * @return TimeResponse
+     */
+    public function setPayback(array $payback): TimeResponse
+    {
+        $this->payback = $payback;
 
         return $this;
     }

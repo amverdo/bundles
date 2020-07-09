@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use Homepizza\ApiBundle\DTO\Customer;
+use Homepizza\ApiBundle\DTO\Delivery;
+use Homepizza\ApiBundle\DTO\Order;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,21 +37,42 @@ class HomeController extends AbstractController
      */
     public function apiAction(): JsonResponse
     {
-        $result = $this->homepizza->getSomething();
+        $customer = new Customer();
+        $delivery = new Delivery();
+        $order = new Order();
 
-        $item = $this->cache->getItem(sha1('demo_key'));
-//        $item = $this->cache->getItem(sha1('test_key'));
-        if (!$item->isHit()) {
-            $data = '123123';
-            $item->set($data);
-            $this->cache->save($item);
-            dump('Нет кэш APP');
-            die();
+        $customer
+            ->setName('Иван Оформитель')
+            ->setPhone('9222323221')
+            ->setAddress("г Екатеринбург, ул Родонитовая, д 1")
+        ;
+
+        $delivery
+            ->setTakeAway(false)
+            ->setLocation("ул. 8 Марта 187")
+            ->setCurrentTime(false)
+            ->setDatetimeWant("2020-07-09 18:40:00")
+        ;
+
+        $order->setMenu([
+            [
+                "id" => "38b3eff8baf56627478ec76a704e9b52",
+                "quantity" => 2
+            ]
+        ]);
+
+        try {
+            $result = $this->homepizza
+                ->checkTime($customer, $delivery, $order)
+            ;
+
+            $result = $result->toArray();
         }
-        else {
-            dump('ЭТО cache.app!');
-            die();
+        catch (\Throwable $e) {
+            $result = ['message' => $e->getMessage()];
+            $code = 500;
         }
+
         return $this->json($result, 200);
     }
 }

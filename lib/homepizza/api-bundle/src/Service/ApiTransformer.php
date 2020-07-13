@@ -160,6 +160,7 @@ class ApiTransformer
     private function toOrder(OrderResponse $object, array $data)
     {
         $object
+            ->setOrderId($data['id'] ?? 0)
             ->setResult($data['result'])
             ->setMessage($data['message'] ?? '')
             ->setSegment($data['region'] ?? '')

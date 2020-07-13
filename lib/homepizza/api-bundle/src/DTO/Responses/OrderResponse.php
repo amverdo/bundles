@@ -9,6 +9,9 @@ class OrderResponse extends AbstractDTO
     /* @var bool $result - Результат создания заказа */
     protected $result;
 
+    /* @var int $orderId - id созданного заказа */
+    protected $orderId = 0;
+
     /* @var string $message - Сообщение в ответ на создание заказа */
     protected $message;
 
@@ -120,5 +123,24 @@ class OrderResponse extends AbstractDTO
     public function getTimeVariants(): array
     {
         return $this->time['variants'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrderId(): int
+    {
+        return $this->orderId;
+    }
+
+    /**
+     * @param int $orderId
+     * @return OrderResponse
+     */
+    public function setOrderId(int $orderId): OrderResponse
+    {
+        $this->orderId = $orderId;
+
+        return $this;
     }
 }

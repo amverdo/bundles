@@ -109,7 +109,7 @@ class ApiManager implements ApiManagerInterface
                     'menu' => $order->getMenu(),
                     'comment' => $order->getComment(),
                     'kits' => $order->getKits() ?? 0,
-                    'bonus' => $order->getPaymentBonuses() ?? 0
+                    'bonus_to_pay' => $order->getPaymentBonuses() ?? 0
                 ]
             ]
         );

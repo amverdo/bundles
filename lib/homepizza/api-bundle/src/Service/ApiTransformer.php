@@ -142,9 +142,9 @@ class ApiTransformer
             $object = new TimeLimitResponse();
             $object
                 ->setMessage($data['result_comment'])
-                ->setTime($data['datetime_current'])
-                ->setFreeKits($data['kits'])
-                ->setSegment($data['region'])
+                ->setTime($data['datetime_current'] ?? '')
+                ->setFreeKits($data['kits'] ?? 0)
+                ->setSegment($data['region'] ?? '')
             ;
         }
         return $object;

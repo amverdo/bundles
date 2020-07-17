@@ -8,12 +8,18 @@ services:
       alias: 'homepizza.transformer'
       public: false
 
+  guzzle_http_client:
+    class: 'GuzzleHttp\Client'
+    autowire: true
+    public: true
+
   homepizza.api:
     class: 'Homepizza\ApiBundle\ApiManager'
     autowire: true
     public: true
-    arguments: ['@http_client', '@cache.app', '@homepizza.transformer', '@service_container']
+    arguments: ['@guzzle_http_client', '@cache.app', '@homepizza.transformer', '@service_container']
 
   Homepizza\ApiBundle\ApiManager:
     alias: 'homepizza.api'
     public: false
+

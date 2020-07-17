@@ -12,15 +12,11 @@ use Homepizza\ApiBundle\DTO\Responses\CustomerResponse;
 use Homepizza\ApiBundle\DTO\Responses\KitsResponse;
 use Homepizza\ApiBundle\DTO\Responses\OrderResponse;
 use Homepizza\ApiBundle\DTO\Responses\TimeResponse;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface AS HttpClient;
 use Symfony\Component\Cache\Adapter\AdapterInterface AS Adapter;
 use Symfony\Component\DependencyInjection\ContainerInterface AS Container;
 use Homepizza\ApiBundle\Service\ApiTransformer;
+use GuzzleHttp\Client AS HttpClient;
+use GuzzleHttp\Exception\GuzzleException;
 
 class ApiManager implements ApiManagerInterface
 {
@@ -208,24 +204,18 @@ class ApiManager implements ApiManagerInterface
      * @param array $options
      * @return array
      * @throws \Psr\Cache\InvalidArgumentException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function makeRequest(string $key, string $method, string $uri, array $options = []): array
     {
         $item = $this->cache->getItem('apibundle_'.sha1($key));
         if (!$item->isHit()) {
             try {
-                $result = $this->http
-                    ->request($method, $uri, $options)
-                    ->toArray();
-            } catch (ClientExceptionInterface $e) {
+                $result = $this->http->request($method, $uri, $options);
+                $result = json_decode($result->getBody()->getContents(), true);
+            } catch (GuzzleException $e) {
                 throw new \Exception('Некорректный запрос');
-            } catch (DecodingExceptionInterface $e) {
-                throw new \Exception('Некорректный ответ');
-            } catch (RedirectionExceptionInterface $e) {
-                throw new \Exception('Больше не обслуживается');
-            } catch (ServerExceptionInterface $e) {
-                throw new \Exception('Ошибка на сервере');
-            } catch (TransportExceptionInterface $e) {
+            } catch (\Throwable $e) {
                 throw new \Exception('Проблема с сетью');
             }
             $item->set($result);

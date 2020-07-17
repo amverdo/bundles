@@ -143,7 +143,7 @@ class ApiTransformer
             $object
                 ->setMessage($data['result_comment'])
                 ->setTime($data['datetime_current'] ?? '')
-                ->setFreeKits($data['kits'] ?? 0)
+                ->setFreeKits((int)$data['kits'])
                 ->setSegment($data['region'] ?? '')
             ;
         }
